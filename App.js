@@ -1,23 +1,29 @@
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import './assets/styles.scss';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ color, size }) => {
             let iconName;
+
             if (route.name === 'Home') {
               iconName = 'home';
             } else if (route.name === 'Settings') {
               iconName = 'cog';
+            } else if (route.name === 'Login') {
+              iconName = 'user';
             }
 
             return <Icon name={iconName} size={size} color={color} />;
@@ -29,8 +35,18 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+        />
+        <Tab.Screen name="Login" component={LoginScreen} options={{
+          headerShown: false,
+          tabBarStyle: {
+            display: "none",
+          },
+        }} />
       </Tab.Navigator>
+
     </NavigationContainer>
   );
 }
