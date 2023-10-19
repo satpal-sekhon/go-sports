@@ -16,6 +16,11 @@ const LoginScreen = () => {
     console.log('Logging in with: ', username, password);
   };
 
+  const handleForgotPassword = () => {
+    // Navigate to ForgotPasswordScreen
+    navigation.navigate('ForgotPassword');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
@@ -53,7 +58,7 @@ const LoginScreen = () => {
       </Button>
 
       <View style={styles.linksContainer}>
-        <TouchableOpacity onPress={() => { }}>
+        <TouchableOpacity onPress={handleForgotPassword}>
           <Text variant="labelMedium" style={styles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => { }}>

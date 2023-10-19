@@ -44,6 +44,12 @@ export default function App() {
             display: "none",
           },
         }} />
+        <Tab.Screen name="ForgetPassword" component={LoginScreen} options={{
+          tabBarStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
+        }} />
       </Tab.Navigator>
 
     </NavigationContainer>
