@@ -5,7 +5,6 @@ import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import './assets/styles.scss';
 
 const Tab = createBottomTabNavigator();
 
