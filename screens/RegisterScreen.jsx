@@ -103,15 +103,16 @@ const RegisterScreen = ({ navigation }) => {
       </div>
 
       <Button mode="contained" onPress={handleLogin} style={styles.button}>
-        Login
+        Sign Up
       </Button>
 
       <View style={styles.linksContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text variant="labelMedium">Already have an account?</Text>
+          <Text variant="labelMedium" style={styles.linkText}>Sign In</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
           <Text variant="labelMedium" style={styles.linkText}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-          <Text variant="labelMedium" style={styles.linkText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

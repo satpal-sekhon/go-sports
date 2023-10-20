@@ -3,13 +3,14 @@ import { View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { TextInput, Button, Text, HelperText } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const loginValidationSchema = yup.object().shape({
   emailAddress: yup.string().email('Invalid email').required('Email is required'),
 });
 
-const handleFormSubmit = (values)=>{
-  console.log('values',values)
+const handleFormSubmit = (values) => {
+  console.log('values', values)
 }
 
 const LoginScreen = ({ navigation }) => {
@@ -44,8 +45,10 @@ const LoginScreen = ({ navigation }) => {
       </Formik>
 
       <View style={styles.linksContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text style={styles.linkText}>Back to Login</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.linkText}>
+            <Icon name="arrowleft" size={14} style={styles.iconWithLabel} />
+            Back to Login</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.linkText}>Sign Up</Text>
@@ -63,6 +66,9 @@ const styles = StyleSheet.create({
   },
   input: {
     //marginBottom: 18,
+  },
+  iconWithLabel: {
+    marginRight: 4
   },
   button: {
     marginTop: 18,
