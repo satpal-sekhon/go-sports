@@ -1,52 +1,50 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { TextInput, Button, Text, HelperText } from 'react-native-paper';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 
-const schema = yup.object().shape({
-  email: yup.string().email('Invalid email').required('Email is required'),
+const loginValidationSchema = yup.object().shape({
+  emailAddress: yup.string().email('Invalid email').required('Email is required'),
 });
 
-const ForgotPasswordScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({});
+const handleFormSubmit = (values)=>{
+  console.log('values',values)
+}
 
-  const handleForgotPassword = () => {
-    schema
-      .validate({ email })
-      .then(() => {
-        setErrors([]);
-        console.log('Validation successful');
-        console.log('Reset password for email:', email);
-      })
-      .catch((err) => {
-        const errors = {};
-        errors[err.path] = err.message;
-        
-        setErrors(errors);
-        console.log('Validation errors:', errors);
-      });
-  };
-
+const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <TextInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        placeholder="Enter your email"
-        placeholderTextColor="#aaa"
-        mode="outlined"
-        error={errors.email}
-      />
+      <Formik
+        initialValues={{ emailAddress: '' }}
+        validationSchema={loginValidationSchema}
+        onSubmit={values => handleFormSubmit(values)}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+          <>
+            <TextInput
+              label="Email address"
+              value={values.emailAddress}
+              onChangeText={handleChange('emailAddress')}
+              onBlur={handleBlur('emailAddress')}
+              style={styles.input}
+              placeholderTextColor="#aaa"
+              mode="outlined"
+              error={errors.emailAddress}
+            />
+            <HelperText type="error" visible={errors.emailAddress} padding='none'>
+              {errors.emailAddress}
+            </HelperText>
 
-      <Button mode="contained" onPress={handleForgotPassword} style={styles.button}>
-        Reset Password
-      </Button>
+            <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+              Forgot Password
+            </Button>
+          </>
+        )}
+      </Formik>
 
       <View style={styles.linksContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
           <Text style={styles.linkText}>Back to Login</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
@@ -64,20 +62,20 @@ const styles = StyleSheet.create({
     margin: 18,
   },
   input: {
-    marginBottom: 18,
+    //marginBottom: 18,
+  },
+  button: {
+    marginTop: 18,
   },
   linksContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 18,
+    marginTop: 12,
   },
   linkText: {
     color: '#6750a4',
-  },
-  button: {
-    marginTop: 10,
-  },
+  }
 });
 
-export default ForgotPasswordScreen;
+export default LoginScreen;

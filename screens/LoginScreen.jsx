@@ -8,9 +8,13 @@ import * as yup from 'yup';
 const loginValidationSchema = yup.object().shape({
   emailAddress: yup.string().email('Invalid email').required('Email is required'),
   password: yup.string()
-  .min(6, 'Password should be atleast 6 characters')
-  .required('Password is required'),
+    .min(6, 'Password should be atleast 6 characters')
+    .required('Password is required'),
 });
+
+const handleFormSubmit = (values) => {
+  console.log('values', values)
+}
 
 const LoginScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +28,7 @@ const LoginScreen = ({ navigation }) => {
       <Formik
         initialValues={{ emailAddress: '', password: '' }}
         validationSchema={loginValidationSchema}
-        onSubmit={values => handleLogin(values)}
+        onSubmit={values => handleFormSubmit(values)}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <>
