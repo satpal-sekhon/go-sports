@@ -1,68 +1,85 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, SafeAreaView, TouchableOpacity  } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { TextInput, Button, Text, HelperText } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Formik } from 'formik';
+import * as yup from 'yup';
 
-const LoginScreen = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const loginValidationSchema = yup.object().shape({
+  emailAddress: yup.string().email('Invalid email').required('Email is required'),
+  password: yup.string()
+  .min(6, 'Password should be atleast 6 characters')
+  .required('Password is required'),
+});
+
+const LoginScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = () => {
-    console.log('Logging in with: ', username, password);
-  };
-
-  const handleForgotPassword = () => {
-    // Navigate to ForgotPasswordScreen
-    navigation.navigate('ForgotPassword');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <TextInput
-        label="Username"
-        value={username}
-        onChangeText={text => setUsername(text)}
-        style={styles.input}
-        placeholderTextColor="#aaa"
-        outlineColor="#aaa"
-        mode='outlined'
-      />
+      <Formik
+        initialValues={{ emailAddress: '', password: '' }}
+        validationSchema={loginValidationSchema}
+        onSubmit={values => handleLogin(values)}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+          <>
+            <TextInput
+              label="Email address"
+              value={values.emailAddress}
+              onChangeText={handleChange('emailAddress')}
+              onBlur={handleBlur('emailAddress')}
+              style={styles.input}
+              placeholderTextColor="#aaa"
+              mode="outlined"
+              error={errors.emailAddress}
+            />
+            <HelperText type="error" visible={errors.emailAddress} padding='none'>
+              {errors.emailAddress}
+            </HelperText>
 
-      <div style={styles.passwordContainer}>
-        <TextInput
-          secureTextEntry={!showPassword}
-          value={password}
-          onChangeText={setPassword}
-          style={styles.passwordInput}
-          placeholder="Enter Password"
-          placeholderTextColor="#aaa"
-          outlineColor="#aaa"
-          mode='outlined'
-        />
-        <MaterialCommunityIcons
-          name={showPassword ? 'eye-off' : 'eye'}
-          size={24}
-          color="#aaa"
-          style={styles.icon}
-          onPress={toggleShowPassword}
-        />
-      </div>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                secureTextEntry={!showPassword}
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                style={styles.passwordInput}
+                label="Password"
+                placeholder="Enter Password"
+                placeholderTextColor="#aaa"
+                mode="outlined"
+                error={errors.password}
+              />
+              <MaterialCommunityIcons
+                name={showPassword ? 'eye-off' : 'eye'}
+                size={24}
+                color="#aaa"
+                style={styles.icon}
+                onPress={toggleShowPassword}
+              />
+            </View>
+            <HelperText type="error" visible={errors.password} padding='none'>
+              {errors.password}
+            </HelperText>
 
-      <Button mode="contained" onPress={handleLogin} style={styles.button}>
-        Login
-      </Button>
+            <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+              Login
+            </Button>
+          </>
+        )}
+      </Formik>
 
       <View style={styles.linksContainer}>
-        <TouchableOpacity onPress={handleForgotPassword}>
-          <Text variant="labelMedium" style={styles.linkText}>Forgot Password?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+          <Text style={styles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { }}>
-          <Text variant="labelMedium" style={styles.linkText}>Sign Up</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.linkText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -73,25 +90,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    margin: 20,
+    margin: 18,
   },
   input: {
-    marginBottom: 20,
+    //marginBottom: 18,
   },
   passwordContainer: {
     position: 'relative'
   },
   passwordInput: {
-    paddingRight: '28px'
+    paddingRight: 50
   },
   icon: {
     position: 'absolute',
-    right: 0,
-    top: '14px',
-    right: '8px'
+    top: 14,
+    right: 8
   },
   button: {
-    marginTop: 20,
+    marginTop: 18,
   },
   linksContainer: {
     flexDirection: 'row',

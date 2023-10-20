@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createBottomTabNavigator();
@@ -44,7 +46,15 @@ export default function App() {
             display: "none",
           },
         }} />
-        <Tab.Screen name="ForgetPassword" component={LoginScreen} options={{
+        <Tab.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{
+          headerShown: false,
+          tabBarStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
+        }} />
+        <Tab.Screen name="Register" component={RegisterScreen} options={{
+          headerShown: false,
           tabBarStyle: {
             display: "none",
           },
